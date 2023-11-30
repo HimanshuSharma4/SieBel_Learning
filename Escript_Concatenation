@@ -1,0 +1,34 @@
+# Code for Service_PreInvokeMethod - Defaulty it is present
+
+function Service_PreInvokeMethod (MethodName, Inputs, Outputs)
+{
+    if (MethodName == "String_Concatenate_Method"){
+        f_string_concatenation(Inputs, Outputs);
+        
+        return (CancelOperation);
+    }
+        
+	return (ContinueOperation);
+}
+
+
+# Code function for Concatenation
+
+function f_string_concatenation(Inputs, Outputs){
+    try{
+     var sFirstName = Inputs.GetProperty("First Name");
+     var sLastName = Inputs.GetProperty("Last Name");
+        
+     var sFullName = sFirstName + " " + sLastName;
+    
+        
+        Outputs.SetProperty("Full Name", sFullName);
+    }
+    
+    catch(e){
+        throw(e);
+    }
+    finally{
+        
+    }
+}

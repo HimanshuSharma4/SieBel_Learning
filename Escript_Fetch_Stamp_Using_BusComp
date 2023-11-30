@@ -1,0 +1,50 @@
+# Code for Service_PreInvokeMethod
+
+function Service_PreInvokeMethod (MethodName, Inputs, Outputs)
+{
+    if (MethodName == "Test_row_id_method"){
+        f_string_concatenation_row_id(Inputs, Outputs);
+        
+        return (CancelOperation);
+    }
+        
+	return (ContinueOperation);
+}
+
+# Code for f_string_concatenation_row_id
+
+function f_string_concatenation_row_id (Inputs, Outputs)
+{
+
+    try{
+        var row_id = Inputs.GetProperty("Row_id");
+        
+        var oBusObj = TheApplication().GetBusObject("Contact");
+        var oBusComp = oBusObj.GetBusComp("Contact");
+        
+        oBusComp.SetViewMode(3);
+        oBusComp.ClearToQuery();
+        
+        oBusComp.SetSearchSpec("Id", row_id);
+        
+        oBusComp.ExecuteQuery(ForwardOnly);
+        
+        var firstName = oBusComp.GetFieldValue("First Name");
+        var lastName = oBusComp.GetFieldValue("Last Name");
+        
+        var fullName = firstName + " " + lastName;
+        
+        Outputs.SetProperty("Job_Title", fullName);
+        
+        oBusComp.SetFieldValue("Job Title", fullName);
+        
+        oBusComp.WriteRecord();
+    }
+
+    catch(e){
+        throw(e);
+    }
+
+    finally{
+    }
+}
